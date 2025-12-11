@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AiDoc 關鍵日期抽取</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">MVP · 非對話模式</p>
+          <h1>AiDoc 文件關鍵日期抽取</h1>
+          <p class="subtext">
+            上傳 PDF / DOCX / TXT，系統直接呼叫 LLM，回傳固定 JSON schema 的日期事件。
+          </p>
+        </div>
+      </header>
+
+      <section class="card">
+        <form id="uploadForm" class="upload">
+          <label class="input-label" for="fileInput">選擇文件</label>
+          <input
+            id="fileInput"
+            name="file"
+            type="file"
+            accept=".pdf,.docx,.txt"
+            required
+          />
+          <p class="hint">大小限制 20MB，僅針對可選取文字的 PDF。</p>
+          <div class="actions">
+            <button type="submit" class="primary">上傳並抽取</button>
+          </div>
+        </form>
+        <div id="status" class="status">待命中…</div>
+      </section>
+
+      <section class="card results">
+        <div class="results-head">
+          <h2>抽取結果</h2>
+          <small>固定 schema：type, date_text, date_iso, summary, page, section, confidence</small>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>type</th>
+                <th>date_text</th>
+                <th>date_iso</th>
+                <th>summary</th>
+                <th>page</th>
+                <th>section</th>
+                <th>confidence</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody">
+              <tr>
+                <td colspan="7" class="empty">尚未執行抽取</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

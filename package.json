@@ -1,0 +1,31 @@
+{
+  "name": "aidoc",
+  "version": "1.0.0",
+  "description": "文件關鍵日期抽取 MVP（非對話型）",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "NODE_ENV=development node backend/server.js",
+    "test": "node scripts/test-validators.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glenn140707/AiDoc.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/glenn140707/AiDoc/issues"
+  },
+  "homepage": "https://github.com/glenn140707/AiDoc#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mammoth": "^1.11.0",
+    "multer": "^2.0.2",
+    "pdf-parse": "^1.1.1"
+  }
+}
