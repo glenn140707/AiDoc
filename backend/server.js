@@ -4,6 +4,7 @@ const pdfParse = require("pdf-parse");
 const mammoth = require("mammoth");
 const cors = require("cors");
 const fs = require("fs");
+const fsp = fs.promises;
 const path = require("path");
 require("dotenv").config();
 
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
 const DOC_CHAR_LIMIT = Number(process.env.DOC_CHAR_LIMIT || 12000);
 const PROMPT_PATH = path.join(__dirname, "../prompts/date_extraction.prompt.md");
+const REQUEST_LOG_DIR = path.join(__dirname, "../outputs/requests");
 
 let datePrompt = "";
 try {
@@ -194,6 +196,8 @@ async function callLLM({ text, pages, sourceFile }) {
     response_format: { type: "json_object" },
   };
 
+  await saveRequestPayload(body, sourceFile);
+
   const resp = await fetch(endpoint, {
     method: "POST",
     headers: {
@@ -215,6 +219,20 @@ async function callLLM({ text, pages, sourceFile }) {
     "";
 
   return { raw, schemaDescription };
+}
+
+async function saveRequestPayload(payload, sourceFile) {
+  try {
+    fs.mkdirSync(REQUEST_LOG_DIR, { recursive: true });
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const safeName = (sourceFile || "unknown").replace(/[^\w.-]+/g, "_");
+    const filePath = path.join(REQUEST_LOG_DIR, `${stamp}_${safeName}.txt`);
+    await fsp.writeFile(filePath, JSON.stringify(payload, null, 2), "utf8");
+    return filePath;
+  } catch (err) {
+    console.warn("無法寫入 LLM 請求檔案：", err.message);
+    return null;
+  }
 }
 
 async function repairLLMOutput({ raw, schema }) {

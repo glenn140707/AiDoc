@@ -17,20 +17,23 @@
 -   時程表、履約一覽表中的「幾日內 / 幾個工作天內」描述。
 
 輸出格式（固定 schema，items 陣列）：
+
+```json
 {
-"items": [
-{
-"date_text": "string",
-"date_iso": "string|null",
-"type": "start|end|deadline|sign|payment|other",
-"summary": "string",
-"source_file": "string",
-"page": "number|null",
-"section": "string|null",
-"confidence": "number|null"
+    "items": [
+        {
+            "date_text": "string",
+            "date_iso": "string|null",
+            "type": "start|end|deadline|sign|payment|other",
+            "summary": "string",
+            "source_file": "string",
+            "page": "number|null",
+            "section": "string|null",
+            "confidence": "number|null"
+        }
+    ]
 }
-]
-}
+```
 
 規則：
 
@@ -40,3 +43,14 @@
 -   若可判斷頁碼/段落請填寫，否則為 null。
 -   所有輸出必須能在文件中找到文字對應，不得憑空捏造。
 -   僅輸出 JSON，前後不要多餘文字。
+
+另外，請特別注意也要包含下列類型的期限：
+
+-   資通安全檢測相關的修補或改善期限（例如：20 個工作天內完成改善）。
+-   系統故障/錯誤/弱點的修復時限與 SLA（例如：4 小時內修復、2 小時內釐清）。
+-   每月/每季/每年的定期檢查或工作報告期限。
+-   教育訓練、演練相關的辦理期限與報告交付期限。
+-   退場作業以外，其他「通知後幾天內」需要完成的事項。
+
+請盡可能列出文件中所有與上述項目有關的日期或期限描述，而不是只選幾個代表。
+若項目很多，仍全部列出，最多可以輸出 50 筆。
