@@ -336,7 +336,9 @@ function sanitizeItems(items, sourceFile) {
           ? item.section.trim()
           : null,
       confidence:
-        typeof item?.confidence === "number" ? item.confidence : null,
+        typeof item?.confidence === "number"
+          ? roundToOneDecimal(item.confidence)
+          : null,
     };
   });
 }
@@ -362,8 +364,16 @@ function validateItems(items, sourceFile) {
     page: typeof item.page === "number" ? item.page : null,
     section: item.section ?? null,
     confidence:
-      typeof item.confidence === "number" ? item.confidence : null,
+      typeof item.confidence === "number"
+        ? roundToOneDecimal(item.confidence)
+        : null,
   }));
+}
+
+function roundToOneDecimal(value) {
+  // Round to one decimal place; retain original scale if value is already an integer.
+  const rounded = Math.round(value * 10) / 10;
+  return Number.isFinite(rounded) ? rounded : null;
 }
 
 module.exports = {
